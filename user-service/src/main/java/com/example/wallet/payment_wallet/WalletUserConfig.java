@@ -1,5 +1,6 @@
 package com.example.wallet.payment_wallet;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.springframework.context.annotation.Bean;
@@ -17,7 +18,7 @@ import org.springframework.kafka.core.ProducerFactory;
 import java.util.Properties;
 
 @Configuration
-public class UserConfig {
+public class WalletUserConfig {
 
     @Bean
     LettuceConnectionFactory getRedisFactory(){
@@ -34,9 +35,9 @@ public class UserConfig {
     }
 
     @Bean
-    RedisTemplate<String, User> getTemplate(){
+    RedisTemplate<String, WalletUser> getTemplate(){
 
-        RedisTemplate<String, User> redisTemplate = new RedisTemplate<>();
+        RedisTemplate<String, WalletUser> redisTemplate = new RedisTemplate<>();
         RedisSerializer<String> stringRedisSerializer = new StringRedisSerializer();
         redisTemplate.setKeySerializer(stringRedisSerializer);
 
@@ -66,5 +67,10 @@ public class UserConfig {
     @Bean
     KafkaTemplate<String ,String> getKafkaTemplet(){
         return new KafkaTemplate(getProducerFactory());
+    }
+
+    @Bean
+    ObjectMapper getObjectMapper(){
+        return new ObjectMapper();
     }
 }
